@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: order-mnt1
+
+  datasource:
+    url: jdbc:hsqldb:mem:testdb
+    username: sa
+    password: password
+
+  jpa:
+    open-in-view: false
+
+  thymeleaf:
+    cache: false
+
+  sql:
+    init:
+      mode: always
