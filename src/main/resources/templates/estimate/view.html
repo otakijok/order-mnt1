@@ -1,16 +1,128 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>見積書参照</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <title th:text="${screenTitle}">見積書(一覧)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+    <style>
+        .search-criteria-area {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .table th.text-right, .table td.text-right {
+            text-align: right;
+        }
+        .table th.text-left, .table td.text-left {
+            text-align: left;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.05);
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>見積書参照</h1>
-        <p th:text="${message}"></p>
+<div class="container mt-4">
+    <h1 th:text="${screenTitle}">見積書(一覧)</h1>
+
+    <!-- Search Criteria Area -->
+    <div class="search-criteria-area">
+        <h2>検索条件</h2>
+        <form th:action="@{/estimate/view}" th:object="${estimateSearchForm}" method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="creator" class="form-label">作成者</label>
+                <input type="text" class="form-control" id="creator" th:field="*{creator}">
+            </div>
+            <div class="col-md-2">
+                <label for="quotationYear" class="form-label">見積番号年</label>
+                <input type="text" class="form-control" id="quotationYear" th:field="*{quotationYear}">
+            </div>
+            <div class="col-md-2">
+                <label for="serialNumber" class="form-label">連番</label>
+                <input type="number" class="form-control" id="serialNumber" th:field="*{serialNumber}">
+            </div>
+            <div class="col-md-2">
+                <label for="branchNumber" class="form-label">枝番</label>
+                <input type="number" class="form-control" id="branchNumber" th:field="*{branchNumber}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="totalAmountFrom" class="form-label">合計金額(円)From</label>
+                <input type="number" class="form-control" id="totalAmountFrom" th:field="*{totalAmountFrom}">
+            </div>
+            <div class="col-md-3">
+                <label for="totalAmountTo" class="form-label">合計金額(円)To</label>
+                <input type="number" class="form-control" id="totalAmountTo" th:field="*{totalAmountTo}">
+            </div>
+            <div class="col-md-4">
+                <label for="companyName" class="form-label">会社名</label>
+                <input type="text" class="form-control" id="companyName" th:field="*{companyName}">
+            </div>
+            <div class="col-md-2">
+                <label for="orderStatus" class="form-label">受注状況</label>
+                <input type="text" class="form-control" id="orderStatus" th:field="*{orderStatus}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="estimateDateFrom" class="form-label">見積日From</label>
+                <input type="date" class="form-control" id="estimateDateFrom" th:field="*{estimateDateFrom}">
+            </div>
+            <div class="col-md-3">
+                <label for="estimateDateTo" class="form-label">見積日To</label>
+                <input type="date" class="form-control" id="estimateDateTo" th:field="*{estimateDateTo}">
+            </div>
+            <div class="col-md-3">
+                <label for="deliveryDateFrom" class="form-label">納入日From</label>
+                <input type="date" class="form-control" id="deliveryDateFrom" th:field="*{deliveryDateFrom}">
+            </div>
+            <div class="col-md-3">
+                <label for="deliveryDateTo" class="form-label">納入日To</label>
+                <input type="date" class="form-control" id="deliveryDateTo" th:field="*{deliveryDateTo}">
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">検索</button>
+            </div>
+        </form>
     </div>
-    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Search Results Area -->
+    <h2>検索結果</h2>
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
+        <tr>
+            <th class="text-left">参照</th>
+            <th class="text-left">見積番号</th>
+            <th class="text-left">作成者</th>
+            <th class="text-left">受注状況</th>
+            <th class="text-left">見積日</th>
+            <th class="text-left">会社名</th>
+            <th class="text-right">合計金額(円)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estimate : ${estimates}" th:if="${estimates != null and !estimates.isEmpty()}">
+            <td class="text-left"><button type="button" class="btn btn-sm btn-info">参照</button></td>
+            <td class="text-left" th:text="${estimate.estimateId}"></td>
+            <td class="text-left" th:text="${estimate.employeeCode}"></td> <!-- Assuming employeeCode maps to creator -->
+            <td class="text-left" th:text="${estimate.orderStatus}"></td>
+            <td class="text-left" th:text="${#dates.format(estimate.estimateDate, 'yyyy/MM/dd')}"></td>
+            <td class="text-left" th:text="${estimate.companyName}"></td>
+            <td class="text-right" th:text="${#numbers.formatDecimal(estimate.totalAmount, 1, 'COMMA', 0, 'POINT')}"></td>
+        </tr>
+        <tr th:if="${estimates == null or estimates.isEmpty()}">
+            <td colspan="7" class="text-center">表示する見積もり情報がありません。</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 </html>
