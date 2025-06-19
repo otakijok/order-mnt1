@@ -1,20 +1,17 @@
 package com.example.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 見積明細テーブルのためのエンティティクラスです。
  */
 @Entity
 @Data
-@NoArgsConstructor
 @IdClass(EstimateDetail.EstimateDetailId.class) // 複合主キーを指定
 public class EstimateDetail {
     @Id
@@ -35,7 +32,6 @@ public class EstimateDetail {
      * 見積明細テーブルの複合主キーを表すインナークラスです。
      */
     @Data
-    @NoArgsConstructor
     public static class EstimateDetailId implements Serializable {
         private String estimateId; // 見積番号
         private Integer detailId; // 明細番号

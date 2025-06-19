@@ -1,3 +1,5 @@
+# https://spring.pleiades.io/spring-boot/appendix/application-properties/
+
 spring:
   application:
     name: order-mnt1
@@ -10,8 +12,8 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      # 組み込みデータベースを使用し、スキーママネージャーが検出されなかった場合、デフォルトは "create-drop" ってことに注意。
+      ddl-auto: none
 
   thymeleaf:
     cache: false
@@ -23,4 +25,3 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2-console

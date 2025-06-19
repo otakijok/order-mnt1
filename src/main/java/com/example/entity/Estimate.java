@@ -1,24 +1,21 @@
 package com.example.entity;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 見積テーブルのためのエンティティクラスです。
  */
 @Entity
 @Data
-@RequiredArgsConstructor
 public class Estimate {
     @Id
-    private final String estimateId; // 見積番号
+    private String estimateId; // 見積番号
     private String employeeCode; // 社員コード
     private String orderStatus; // 受注状況
     private String orderProbability; // 受注確度

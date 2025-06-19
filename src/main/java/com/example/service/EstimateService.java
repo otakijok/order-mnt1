@@ -1,15 +1,13 @@
 package com.example.service;
 
-import com.example.entity.Estimate;
-import com.example.form.EstimateSearchForm;
-import com.example.repository.EstimateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import com.example.entity.Estimate;
+import com.example.form.EstimateSearchForm;
+import com.example.repository.EstimateRepository;
 
 /**
  * 見積もりに関するビジネスロジックを提供するサービスクラスです。
@@ -25,7 +23,6 @@ public class EstimateService {
      *
      * @param estimateRepository 見積リポジトリ
      */
-    @Autowired
     public EstimateService(EstimateRepository estimateRepository) {
         this.estimateRepository = estimateRepository;
     }
