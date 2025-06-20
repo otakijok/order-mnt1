@@ -1,4 +1,8 @@
 ```mermaid
+---
+config:
+  theme: forest
+---
 erDiagram
     見積 {
         string 見積番号 PK
